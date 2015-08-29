@@ -27,47 +27,7 @@
 <p>Attempt number two will be a little more methodical and documented here!</p>
 
 <h4>
-<a id="1-connect-the-rc-car-to-the-arduino" class="anchor" href="#1-connect-the-rc-car-to-the-arduino" aria-hidden="true"><span class="octicon octicon-link"></span></a>1: Connect the RC car to the Arduino</h4>
-
-<ul>
-<li>
-<p>Components required</p>
-
-<ul>
-<li>1 RC car</li>
-<li>1 <a href="https://www.arduino.cc/en/Guide/HomePage">Arduino</a> (I have an <a href="https://www.arduino.cc/en/Main/arduinoBoardUno">Uno</a> R2)</li>
-<li>1 <a href="https://www.arduino.cc/en/Main/ArduinoMotorShieldR3">Arduino motor shield</a> (or build a circuit)</li>
-<li>12 connector wires</li>
-<li>soldering equipment</li>
-<li>1 breadboard</li>
-</ul>
-</li>
-<li>
-<p>Wire things up</p>
-
-<blockquote>
-<p>I got lucky in finding <a href="http://www.rcgroups.com/forums/showthread.php?t=1651494">instructions</a> to connect to the exact RC car I had purchased, but a little googling turned up a number of different examples.  Basically you need to connect the motor shield's power and ground to those of the RC car, then connect the drive pins on the shield to the motor output pins on the car's IC.</p>
-</blockquote>
-</li>
-<li>
-<p>Test your soldering</p>
-
-<ul>
-<li>If the car still drives with the RC controller, you've probably succeeded in not breaking it!</li>
-<li>You can test your solders by connecting each of the IC wires to the car's power in turn. If the car's main power is more than a few volts you should use a resistor in the connection to protect the IC.  If anything doesn't work check your solders. This is also a good time to label the wires (F/B/L/R/Vcc/Grnd)</li>
-</ul>
-</li>
-<li><p><a href="https://github.com/jasonpvp/particle-arduino-car/blob/master/src/step_1_arduino_to_car/drive_car_test_1.ino">Program the Arduino to drive your car</a></p></li>
-<li>
-<p>Connect the Arduino to your car</p>
-
-<ul>
-<li>Connect the motor car's Vcc (hot) and ground wires and the L/R and F/B to the power pins and drive pins of the motor shield</li>
-</ul>
-</li>
-<li><p>Test it out!
-With the above program on your Arduino and the board wired to the car, the drive and steering motors should ramp up from 0 to 100% every few seconds.</p></li>
-</ul>
+<a id="1-connect-the-rc-car-to-the-arduino" class="anchor" href="connect_arduino_to_car.html" aria-hidden="true"><span class="octicon octicon-link"></span>1: Connect the RC car to the Arduino</a></h4>
 
 <h4>
 <a id="2-get-the-particle-board-to-talk-to-the-arduino" class="anchor" href="#2-get-the-particle-board-to-talk-to-the-arduino" aria-hidden="true"><span class="octicon octicon-link"></span></a>2: Get the Particle board to talk to the Arduino</h4>
