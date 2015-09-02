@@ -1,0 +1,200 @@
+https://github.com/ivanseidel/ArduinoThread
+
+====================================
+Arduino
+<code>
+#include <Thread.h>
+#include <ThreadController.h>
+#include <AltSoftSerial.h>
+AltSoftSerial altSerial;
+
+const int 
+PWM_LR   = 3,
+DIR_LR   = 12,
+BRAKE_LR = 9,
+SNS_LR   = A0,
+PWM_FB   = 11,
+DIR_FB   = 13,
+BRAKE_FB = 8,
+SNS_FB   = A1,
+FORWARD  = HIGH,
+BACKWARD = LOW,
+LEFT     = HIGH,
+RIGHT    = LOW,
+
+//serial commands
+MOVE_FORWARD = 1,
+MOVE_BACKWARD = 2,
+TURN_LEFT = 3,
+TURN_RIGHT = 4,
+BRAKE = 5;
+
+String altSerialBuffer;
+ThreadController controller;
+Thread unbrakeThread;
+
+void setup() {
+  // Configure the A output
+  pinMode(BRAKE_LR, OUTPUT);  // Brake pin on channel A
+  pinMode(DIR_LR, OUTPUT);    // Direction pin on channel A
+  pinMode(BRAKE_FB, OUTPUT);  // Brake pin on channel A
+  pinMode(DIR_FB, OUTPUT);    // Direction pin on channel A
+
+  // Open Serial communication
+  Serial.begin(9600);
+  altSerialBuffer = "";
+  altSerial.begin(9600);
+  
+  controller = ThreadController();
+  unbrakeThread = Thread();
+  unbrakeThread.enabled = false;
+  unbrakeThread.setInterval(500);
+  unbrakeThread.onRun(unbrake);
+  controller.add(&unbrakeThread);
+  
+  Serial.println("Ready to drive via serial");
+}
+
+void loop() {
+  char inChar;
+
+  if (altSerial.available()) {
+    inChar = altSerial.read();
+    altSerialBuffer += inChar;
+    if (inChar == '\n') {
+      processCommand(altSerialBuffer);
+      altSerialBuffer = "";
+    }
+  }
+  controller.run();
+}
+
+void processCommand(String command) {
+  int action = 0;
+  int value = 0;
+  int tokenIndex = command.indexOf(' ');
+  if (tokenIndex > -1) {
+    action = command.substring(0, tokenIndex - 1).toInt();
+    value = command.substring(tokenIndex + 1).toInt();
+  } else {
+    action = command.toInt();
+  }
+  switch(action) {
+    case MOVE_FORWARD:
+      move(FORWARD, value);
+      break;
+    case MOVE_BACKWARD:
+      move(BACKWARD, value);
+      break;
+    case TURN_LEFT:
+      turn(LEFT, value);
+      break;
+    case TURN_RIGHT:
+      turn(RIGHT, value);
+      break;
+    case BRAKE:
+      brake();
+      scheduleUnbrake();
+      break;
+  }
+}
+
+void move(int direction, int speed) {
+  digitalWrite(BRAKE_FB, LOW);
+  digitalWrite(DIR_FB, direction);
+  analogWrite(PWM_FB, speed);
+}
+
+void turn(int direction, int speed) {
+  digitalWrite(BRAKE_LR, LOW);
+  digitalWrite(DIR_LR, direction);
+  analogWrite(PWM_LR, speed);
+}
+
+void brake() {
+  digitalWrite(BRAKE_FB, HIGH);
+}
+
+void scheduleUnbrake() {
+  unbrakeThread.enabled = true;
+}
+void unbrake() {
+  digitalWrite(BRAKE_FB, LOW);  
+  unbrakeThread.enabled = false;
+}
+</code>
+
+===================================
+// Send RC car commands to Arduino
+
+
+const int
+//serial commands
+MOVE_FORWARD = 1,
+MOVE_BACKWARD = 2,
+TURN_LEFT = 3,
+TURN_RIGHT = 4,
+BRAKE = 5;
+
+int t;
+int value;
+char c;
+char printBuff[64];
+String altSerialBuffer;
+
+void setup() {
+  Serial.begin(9600);             // init Serial for logging output to the console
+  Serial1.begin(9600);            // init Serial1 for communicationover rx/tx pins
+  Serial.write("begin");
+  t = MOVE_FORWARD;
+  value = 0;
+}
+
+
+void loop() {
+  char inChar;
+
+  if (Serial1.available()) {
+    inChar = Serial1.read();
+    altSerialBuffer += inChar;
+    if (inChar == '\n') {
+      processCommand(altSerialBuffer);
+      altSerialBuffer = "";
+    }
+  }
+  
+  sendCommand(t, value);
+  value += 20;
+  if (value > 255) {
+      value = 0;
+      sendCommand(t, value);
+      t++;
+      if (t > TURN_RIGHT) {
+          sendCommand(BRAKE, 0);
+          t = MOVE_FORWARD;
+      }
+  }
+  delay(100);
+}
+
+void sendCommand(int action, int value) {
+    sprintf(printBuff, "Send command: %d %d\n", t, value);
+    Serial.write(printBuff);
+    char command[8];
+    sprintf(command, "%d %d\n", action, value);
+    Serial1.write(command);
+}
+
+void processCommand(String command) {
+  int action = 0;
+  int val = 0;
+  int tokenIndex = command.indexOf(' ');
+  if (tokenIndex > -1) {
+    action = command.substring(0, tokenIndex - 1).toInt();
+    val = command.substring(tokenIndex + 1).toInt();
+  } else {
+    action = command.toInt();
+  }
+  sprintf(printBuff, "got command: %d %d\n", action, val);
+  Serial.write(printBuff);
+}
