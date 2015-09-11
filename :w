@@ -40,15 +40,14 @@
 <li>
 <p>Solder jumper wires to your RC car</p>
 
-<p>I got lucky in finding <a target = "_blank" href="http://www.rcgroups.com/forums/showthread.php?t=1651494">instructions</a> to connect to the exact RC car I had purchased, but a little googling turned up a number of <a target="_blank" href="http://www.intorobotics.com/build-robot-without-arduino-shield-r3-dc-stepper-motors-controlled/">different examples</a>.  Basically you need to solder jumper wires to the forward, backward, left and right signal pins on the car's main IC chip and two more to the positive battery and ground terminals.</p>
-<a target="_blank" href="http://www.rcgroups.com/forums/showthread.php?t=1651494"><img src="http://static.rcgroups.net/forums/attachments/1/0/6/4/1/8/a4855902-226-2.jpg" style="height: 150px;"></img></a>
+<p>I got lucky in finding <a href="http://www.rcgroups.com/forums/showthread.php?t=1651494">instructions</a> to connect to the exact RC car I had purchased, but a little googling turned up a number of <a target="_blank" href="http://www.intorobotics.com/build-robot-without-arduino-shield-r3-dc-stepper-motors-controlled/">different examples</a>.  Basically you need to solder jumper wires to the forward, backward, left and right signal pins on the car's main IC chip and two more to the positive battery and ground terminals.</p>
 </li>
 <li>
 <p>Test your soldering</p>
 
 <ul>
 <li>If the car still drives with the RC controller, you've probably succeeded in not breaking it!</li>
-<li>You can test your solders by touching each of the L/R/F/B wires to the Vcc wire in turn. If the car's main power is more than a few volts you should use a resistor in the connection to protect the IC. If you are not able to trigger a single function with each wire check your solders carefully to make sure they're solid and connecting to only one pin each. This is also a good time to label the wires like so:
+<li>You can test your solders by connecting each of the IC wires to the car's power in turn. If the car's main power is more than a few volts you should use a resistor in the connection to protect the IC.  If anything doesn't work check your solders. This is also a good time to label the wires like so:
   <table>
     <tr><td><b>Label</b></td><td><b>Function</b></td></tr>
     <tr><td>Vcc</td><td>Positive power terminal</td></tr>
@@ -67,7 +66,7 @@
 <p>Connect the Arduino to your car</p>
 
 <ul>
-<li>Connect the car's 6 new jumper wires to your Arduino using the breadboard and the other 6 jumper wires like so:
+<li>Connect the car's new jumper wires to your Arduino like so:
   <table>
     <tr><td><b>Car</b></td><td><b>Motor shield</b></td></tr>
     <tr><td>Vcc</td><td>Vin</td></tr>
@@ -82,15 +81,8 @@
 </ul>
 </li>
 <li><p>Test it out!
-With the above program on your Arduino and the board wired to the car, the drive and steering motors should ramp up from 0 to 100% every few seconds. If not:
-  <ul>
-    <li>If the motor shield lights are not lighting up check the program for errors</li>
-    <li>If the motor shield lights are lighting up check your jumper connections</li>
-  </ul>
-</p></li>
+With the above program on your Arduino and the board wired to the car, the drive and steering motors should ramp up from 0 to 100% every few seconds.</p></li>
 </ul>
-<p><a href="/Users/jvanpelt/repos/particle-arduino-car/index.html">Back to the main page</a></p>
-<p><a href="/Users/jvanpelt/repos/particle-arduino-car/particle_to_arduino.html">On to the next step</a></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/jasonpvp/particle-arduino-car">Particle/Arduino RC Car</a> is maintained by <a href="https://github.com/jasonpvp">jasonpvp</a>.</span>
@@ -100,5 +92,6 @@ With the above program on your Arduino and the board wired to the car, the drive
 
     </section>
 
+  
   </body>
 </html>
