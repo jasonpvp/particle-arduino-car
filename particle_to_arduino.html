@@ -20,10 +20,51 @@
 
     <section class="main-content">
 <h4>2: Get the Particle board to talk to the Arduino</h4>
-
-<p>description</p>
-
-
+"Wait a minute", you might be asking, "why do we need two controllers?". We don't, really. The Particle could do just fine on its own, but I had the parts and getting boards to talk to each other via serial is a fun exercise:)
+<ul>
+<li>
+  <p>Components required</p>
+  <ul>
+    <li><a target="_blank" href="https://www.arduino.cc/en/Main/arduinoBoardUno">1 Arduino</a></li>
+    <li><a target="_blank" href="https://store.particle.io/?product=particle-photon">1 Particle board</a></li>
+    <li><a target="_blank" href="http://www.adafruit.com/products/1787">1 logic level converter</a></li>
+    <li>11 <a target="_blank" href="http://www.makershed.com/products/deluxe-breadboard-jumper-wires?gclid=CKbN6cqI7scCFQiVfgodnogJ-w">jumper wires</a></li>
+  </ul>
+</li>
+<li>
+  <p>Arduino serial communications</p>
+  <p>
+    The Arduino I have shared its main serial pins with the USB serial.
+    This is a pain if you also want to plug it into your computer and into another board, so I used the <a href="https://www.pjrc.com/teensy/td_libs_AltSoftSerial.html" target="_blank">AltSoftSerial</a> to enable serial communications on pins 8 & 9.
+    This results in a pin-conflict with the motor shield, but we'll work around that later.
+  </p>
+  <p>
+    Load <a href="arduino_serial_test_1.ino">this program</a> onto your Arduino and wire connect pin 8 to pin 9 as shown below. This will get the Arduino talking to itself over serial.
+  </p>
+  <a href="images/arduino_talking_to_itself.jpeg" target="_blank"><img src="images/arduino_talking_to_itself.jpeg" width="200px"/></a>
+</li>
+<li>
+  <p>Particle serial communications</p>
+  <p>
+    Load <a href="particle_serial_test_1.ino">this program</a> onto your Particle board and connect the RX and TX pins to each other (yellow wire beow). This will get the Particle talking to itself over serial
+  </p>
+  <a href="images/particle_talking_to_itself.jpeg" target="_blank"><img src="images/particle_talking_to_itself.jpeg" width="200px" /></a>
+</li>
+<li>
+  <p>Particle to Arduino serial communication</a>
+  <p>
+    If you're using an Arduino that outputs 5v on its digital pins as I am, you have to convert the voltage down to 3.3v for the Particle to protect its pins
+    Pins 8 and 9 on the Arduino are RX and TX respectively. They will talk to TX and RX of the Particle through the shifter.
+    Below is a pic of everything wired up. [diagram pending]
+  </p>
+  <a href="images/parc_serial_wiring.jpeg" target="_blank"><img src="images/parc_serial_wiring.jpeg" width="200px" /></a>
+  <p>
+    Boot up the Arduino first - it's more forgiving about accepting a Serial connection from a new device.
+    Boot up the Particle next.
+    They should start talking to each other. If you open the Arduino's serial console you should see "ping"s coming from the Particle. If you open the Particle's serial console in your computer's terminal you should see "pong"s coming from your Arduino.
+  </p>
+</li>
+</ul>
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/jasonpvp/particle-arduino-car">Particle/Arduino RC Car</a> is maintained by <a href="https://github.com/jasonpvp">jasonpvp</a>.</span>
 
